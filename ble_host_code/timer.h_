@@ -1,0 +1,22 @@
+#include <stdio.h>
+#include <time.h>
+#include <stdint.h>
+#include "encrypt.h"
+#include "uart.h"
+
+#ifndef timer_INCLUDED
+#define timer_INCLUDED
+
+#define X_ATTRIBUTE_HANDLE                              15
+#define Y_ATTRIBUTE_HANDLE                              18
+#define Z_ATTRIBUTE_HANDLE                              21
+#define POSITION_ATTRIBUTE_HANDLE                       25
+#define KEY_ID_ATTRIBUTE_HANDLE                         29
+
+extern pthread_t update_values_thread;
+
+void invalidate_values();
+int update_thread_init();
+void *update_attribute_thread(void *argptr);
+
+#endif

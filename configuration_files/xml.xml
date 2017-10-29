@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<APPVISU>
+  <Module Type="Test" Variant="1">
+    <Content Type="Speedo" MinUserLevel="10">
+      <Channel Type="USINT"/>
+      <Parameter ID="Description" Value="Speedo USINT 238"/>
+      <Parameter ID="Unit" Value="mm/s"/>
+      <Parameter ID="Minimum" Value="0"/>
+      <Parameter ID="Maximum" Value="300"/>
+      <Parameter ID="Sections" Value="3" BackgroundColor="0x5588FF">
+        <Parameter Length="100" Color="0x00FF00"/>
+        <Parameter Length="100" Color="0x0000FF"/>
+        <Parameter Length="100" Color="0xFF0000"/>
+      </Parameter>
+    </Content>
+    <Content Type="Speedo" MinUserLevel="6">
+        <Channel Type="SINT"/>
+        <Parameter ID="Description" Value="Speedo SINT -117"/>
+        <Parameter ID="Unit" Value="units"/>
+        <Parameter ID="Minimum" Value="-200"/>
+        <Parameter ID="Maximum" Value="100"/>
+        <Parameter ID="Sections" Value="3" BackgroundColor="0xFF8833">
+            <Parameter Length="100" Color="0x88FF00"/>
+            <Parameter Length="100" Color="0x0088FF"/>
+            <Parameter Length="100" Color="0xFF0088"/>
+        </Parameter>
+    </Content>
+    <Content Type="Output" MinUserLevel="2">
+      <Parameter ID="Description" Value="Test String"/>
+      <Channel Type="OCTET[16]"/>
+    </Content>
+    <Content Type="Output" MinUserLevel="0">
+        <Parameter ID="Description" Value="Test Encoding"/>
+        <Channel Type="OCTET[16]"/>
+    </Content>
+    <Content Type="Output" MinUserLevel="0">
+      <Parameter ID="Description" Value="Test UDINT 127394"/>
+      <Channel Type="UDINT"/>
+      <Parameter ID="Unit" Value="[°C]"/>
+    </Content>
+    <Content Type="Output" MinUserLevel="4">
+        <Parameter ID="Description" Value="Test DINT -239487"/>
+        <Channel Type="DINT"/>
+        <Parameter ID="Unit" Value="km/h"/>
+    </Content>
+    <Content Type="Text" MinUserLevel="7">
+        <Parameter ID="Description" Value="Test Encoding: Überschrift"/>
+    </Content>
+    <Content Type="Input" MinUserLevel="9">
+      <Parameter ID="Description" Value="Test Text (Input)"/>
+      <Channel Type="OCTET[5]"/>
+    </Content>
+    <Content Type="Input" MinUserLevel="8">
+      <Parameter ID="Description" Value="Test INT (Input) -20055"/>
+      <Channel Type="INT"/>
+      <Parameter ID="Unit" Value="units"/>
+    </Content>
+    <Content Type="Input" MinUserLevel="6">
+        <Parameter ID="Description" Value="Test UINT (Input) 20055"/>
+        <Channel Type="UINT"/>
+        <Parameter ID="Unit" Value="units"/>
+    </Content>
+    <Content Type="OfflineChart" MinUserLevel="3">
+        <Parameter ID="Description" Value="Test Timestamp UDINT 1s-Interval"/>
+        <Parameter ID="LabelX" Unit="Timestamp"/>
+        <Parameter ID="LabelY" Unit="[°C]"/>
+        <Parameter ID="ValuesY" Type="UDINT"/>
+        <Parameter ID="SamplingIntervall" Value="1000"/>
+        <Channel Type="UDINT"/>
+        <Channel Type="OCTET[16]"/>
+    </Content>
+    <Content Type="OfflineChart" MinUserLevel="5">
+        <Parameter ID="Description" Value="Test Time DINT 2.5s-Interval"/>
+        <Parameter ID="LabelX" Unit="Time"/>
+        <Parameter ID="LabelY" Unit="[°C]"/>
+        <Parameter ID="ValuesY" Type="DINT"/>
+        <Parameter ID="SamplingIntervall" Value="2500"/>
+        <Channel Type="UDINT"/>
+        <Channel Type="OCTET[16]"/>
+    </Content>
+    <Content Type="OfflineChart" MinUserLevel="7">
+        <Parameter ID="Description" Value="Test Array INT - SINT"/>
+        <Parameter ID="LabelX" Unit="Array"/>
+        <Parameter ID="LabelY" Unit="[mm]"/>
+        <Parameter ID="ValuesX" Type="INT"/>
+        <Parameter ID="ValuesY" Type="SINT"/>
+        <Channel Type="UDINT"/>
+        <Channel Type="OCTET[8]"/>
+        <Channel Type="OCTET[4]"/>
+    </Content>
+    <Content Type="SpiritLevel" MinUserLevel="0">
+    </Content>
+  </Module>
+</APPVISU>

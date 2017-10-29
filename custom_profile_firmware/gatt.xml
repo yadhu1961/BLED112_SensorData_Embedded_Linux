@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<configuration>
+    <service uuid="1800">
+      <description>Generic Access Profile</description>
+
+      <characteristic uuid="2a00">
+        <properties read="true" const="true" />
+        <value>Camera</value>
+      </characteristic>
+	  
+	  <characteristic uuid="2a01">
+        <properties read="true" const="true" />
+        <value type="hex">0000</value>
+      </characteristic>
+	  
+    </service>
+    
+    <service uuid="00431c4a-a7a4-428b-a96d-d92d43c8c7cf">
+        <description>Sensor Data Service</description>
+        
+		<characteristic uuid="f1b41cde-dbf5-4acf-8679-ecb8b4dca6fe" id="data">
+            <properties read="true" write="true"/>
+            <value length="241"/>
+	    <description>sensor_data</description>
+        </characteristic>
+		
+		<characteristic uuid="baadc8ba-574c-11e7-907b-a6006ad3dba0" id="non_cyclic_data">
+            <properties read="true" write_no_response="true"/>
+            <value length="500" type="user"/>
+		<description>non_cyclic_data</description>
+        </characteristic>
+	
+    </service>
+	
+    <service uuid="00431c4a-c7a4-428b-a96d-d92d43c8c7cf">
+        <description>Control Service</description>
+	
+		<characteristic uuid="07e6bf27-47d4-40e8-aedb-52777321efa6" id="key_id">
+            <properties read="true" write="true"/>
+            <value length="1"/>
+        </characteristic>
+	
+		<characteristic uuid="7dcaaa30-4473-11e7-a919-92ebcb67fe33" id="xml_data">
+            <properties read="true" write_no_response="true"/>
+            <value length="500" type="user"/>
+        </characteristic>
+	
+		<characteristic uuid="79e40442-4e81-411e-aeec-8e0befc3d24e" id="xml_control">
+            <properties write="true" read="true" />
+            <value length="1"/>
+        </characteristic>
+		
+		<characteristic uuid="23206ae6-4916-11e7-a919-92ebcb67fe33" id = "meta_data">
+			<properties read="true"/>
+			<value length="50" type="hex"/>
+		</characteristic>
+    </service>
+
+</configuration>

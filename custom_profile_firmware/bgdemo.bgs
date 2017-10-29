@@ -1,0 +1,13 @@
+dim tmp(10)
+
+event system_boot(major ,minor ,patch ,build ,ll_version ,protocol_version ,hw )
+#set to advertising mode
+	call gap_set_mode(gap_general_discoverable,gap_undirected_connectable)
+#set bondable mode. Yadhu commented the below line since I dont want to enable pairing. Since it allows automatic connection without userspace authentication required B and R
+	#call sm_set_bondable_mode(1)
+end
+	
+event connection_disconnected(handle,result)
+#connection disconnected, continue advertising
+    call gap_set_mode(gap_general_discoverable,gap_undirected_connectable)
+end

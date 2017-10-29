@@ -1,0 +1,11 @@
+#This is a HexString
+#1st byte: Key-ID
+#2nd byte: Access Level
+#2nd - 17th byte: Encryption key (incl. access level)
+#There should be a newline character after every key
+
+0102343580917a52866d89907e3c2f97f2
+02044cf0b1defad4e873c18cea6a9155fc
+0306e35764d5937fc4994cfb5471045bad
+04089eb20cbd1c0f7489ee8ab0a333bbe2
+050afa3006fa01be6ba03c9563165b42a4

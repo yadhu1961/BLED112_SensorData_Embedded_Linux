@@ -1,0 +1,6 @@
+#Name
+#DataUpdateInMilliseconds
+#KeysUpdateInMilliseconds
+Complex test device
+800
+10000
