@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/add.o.dir/add.c.o  -o add.o -rdynamic 

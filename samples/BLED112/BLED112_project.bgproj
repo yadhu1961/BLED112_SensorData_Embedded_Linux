@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project>
+	<gatt in="gattBLED112.xml" />
+	<hardware in="hardware.xml" />
+	<usb_main in="cdc.xml" />
+	<config in="config.xml" />
+	<script in="iBeacon.bgs" />
+	<image out="iBeacon_BLED112.hex" />
+	<boot fw="boot" />
+	<device type="ble112" />
+</project>
+

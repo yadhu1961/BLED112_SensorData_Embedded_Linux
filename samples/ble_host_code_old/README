@@ -1,0 +1,97 @@
+Steps for running the ble code in the linux board.
+
+1. Connect the dongle to board(Running Linux).
+2. Run the "dmesg" command you will see, To which port dongle is connected(eg: /dev/ttyACM0).
+    It can be from /dev/ttyACM0 to /dev/ttyACM9.
+3. If you have an account in the https://gitlab.motius.de you can download the code(If don't have one create one and add
+    your PC privately key to git account).
+4. Download the code by executing following command "git clone git@gitlab.motius.de:internal/b-and-r-middelware.git"
+	(obviously without double quotes :-) ).
+5. After downloading goto repository directory with the command(cd b-and-r-middelware).
+6. Switch to developer branch by using the command (git checkout developer).
+7. Then, if do "ls" you will see lot of directories. main code is in "ble_host_code" directory. change to this directory.
+8. If you don't have libssl-dev package installed you have install it.(If you are running debian based linux install it using
+	the command "sudo apt-get install libssl-dev". This package is needed for AES encryption api's.
+9. In ble_host_code directory run the "make" command without quotes. This will successfully build the code.
+	If you have followed all the steps correctly. It will create a executable with the name "ble_host_app.out"
+10. In the main repository directory you will see a directory with the name "configuration_files" This directory contains
+	database of keys and their permission levels, Sensor permission levels, sample xml file which needs to transferred,
+	and attributes.txt(This file is optional if not specified default attribute handle values will be considered)
+11. Run built binary from step 9 with following command. Refer
+	sudo ./ble_host_app.out portname keys_file_path xml_file_path attributes_file_path sensor_permissions_file_path
+	eg: sudo ./ble_host_app.out /dev/ttyACM0 /home/yadhu/.br/keys.txt /home/yadhu/.br/gatt.xml /home/yadhu/.br/attributes.txt /home/yadhu/.br/sensor_permissions.txt
+12. After running the above command, device will start broacasting the itself as camera.
+
+
+Protocol between the BLE device and the smart phone app.
+Steps by the application to connect to B and R BLE smart dongle.
+
+Protocol between the BLE device and the smart phone app.
+Steps by the application to connect to B and R BLE smart dongle.
+
+1. First smart phone will scan for available devices.
+
+2. Presently BLE Dongle is flashed with firmware which advertises itself as "camera" device.
+
+3. Smart phone will connect to BLE smart dongle which advertises itself as a "camera"
+	After connecting the smart phone can see four services implemented. Following figure shows the list of services.
+
+4. The first service named Generic Access(UUID: 0x1800) is the default service which is present in all the BLE profiles.
+
+5. The next service(UUID:00431c4a-a7a4-428b-a96d-d92d43c8c7cf) is a read only service which has the valid
+	gyro sensor data after valid authentication. This service contains three characteristics each of which is
+	X(UUID:f1b41cde-dbf5-4acf-8679-ecb8b4dca6fe), Y(UUID:f1b41cdd-dbf5-4acf-8679-ecb8b4dca6fe) and
+	Z(UUID:f1b41cdc-dbf5-4acf-8679-ecb8b4dca6fe) value respectively. Each of these characteristics is 17 byte
+	(128-bit encrypted value plus 1 byte checksum of unencrypted sensor data) wide. These values contain the
+	encrypted sensor data of 16 bytes wide and one byte of check sum of unencrypted sensor data.
+	Smart phone application will decrypt the first 16 bytes and then will calculate the checksum of the
+	decrypted data, compares the checksum to 17 byte to make sure the data is valid/decrypted correctly or not.
+
+7. The next service(UUID:00431c4a-b7a4-428b-a96d-d92d43c8c7cf) is another sensor data service which has position
+	sensor value of the camera after the valid authentication. This service contains one characteristic
+	(UUID:f1b41cdf-dbf5-4acf-8679-ecb8b4dca6fe) This characteristic is 17 bytes, The first 16 bytes contains
+	the encrypted value of sensor data and 17th byte has the checksum of unencrypted sensor data.
+	Smart phone application will decrypt the first 16 bytes and then will calculate the checksum of the decrypted data,
+	compares the checksum to 17 byte to make sure the data is valid/decrypted correctly or not.
+
+8. The next service(UUID:00431c4a-c7a4-428b-a96d-d92d43c8c7cf) is the very important special service which contains
+	a readable and writable characteristic(UUID:f1b41cdg-dbf5-4acf-8679-ecb8b4dca6fe) it is 2 byte wide.
+	This characteristic is used for sending the authentication key index from smart phone to the ble dongle.
+	If this key index matches any of the key in the Linux host then dongle starts sending encrypted sensor data with
+	the corresponding permission levels of the key. Smart phone will scan the QR code and will write the key index(Key
+	index is 2 bytes and its little endian) of the security key to this service characteristic.
+
+	This service contains two more characteristics which are used for initial transfer of the xml from ble device to
+	smartphone(After XML transfer these characteristics are useless) According to the current implementation, It can
+	handle xml file of 5 KB(It doesn't make sense to transfer a large file via ble) In these two characteristics
+	one is of type 600 bytes with characteristic UUID 8c7c03bc-1bc8-43e3-8267-f5c0c0a6eac8 This characteristic is
+	special type. Whenever gatt client tries to read the value, ble dongle internally gets the call back
+	and first 600 bytes of xml gets written(This will happen within 30 seconds of read request) then gatt client
+	receives first 600 bytes of data. For the next 600 bytes client should read this characteristic again then gatt
+	server will send next 600 byte chunk to client. This process continues until all xml data transferred, Once file
+	transfer is complete, The BLE device will notify the gatt client by writing the value xml file size to last
+	characteristic of size 2 bytes. This last characteristic has UUID 79e40442-4e81-411e-aeec-8e0befc3d24e. This
+	notifiable characteristic. Before reading the xml data client should register for this notifiable last characteristic
+	for receiving the notification.Once the complete file is transferred smart phone receives a notification if it earlier
+	registered for this characteristic. This notification contains the value of the xml file size. There is no handshake
+	and error correction or checksum is needed since BLE stack(Specifically link layer) makes sures that correct data is
+	transferred between two communicating devices.
+
+9. BLE device will verify the key index. If it belongs to any of the keys in the key database it will continue connection
+	or else it will automatically disconnect from the smart phone.
+
+10. If the key index is valid then BLE smart device will determine the key and its permission levels from a
+	key database based on the key id sent from app.
+
+11. Based on the permission levels allowed for the key, BLE device will expose the corresponding encrypted
+	values of the sensors.
+
+12. Each sensor value is 17 byte value. 17th byte contains the checksum of unencrypted sensor data.
+
+13. This checksum is useful to verify whether we have decrypted correctly. This can be done by calculating.
+	The checksum(Check sum of 16 bytes) of the decrypted value and matching with the 17th byte.
+
+14. The decrypted value of the first 16 bytes of the characteristic represent the real sensor value
+	this can used plotting graph or analytics(Whatever it is, its apps job).
+
+15. If the smart phone gets disconnected, Then again BLE smart dongle starts advertising its presence.

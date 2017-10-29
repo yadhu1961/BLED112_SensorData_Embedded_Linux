@@ -1,0 +1,16 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/home/yadhu/motius/learn_cmake/subtractionlib/sub.c
+sub.h
+/home/yadhu/motius/learn_cmake/subtractionlib/sub.h
+
+/home/yadhu/motius/learn_cmake/subtractionlib/sub.h
+stdio.h
+-
+

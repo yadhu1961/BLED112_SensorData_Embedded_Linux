@@ -1,0 +1,23 @@
+Start testing: Mar 09 11:44 CET
+----------------------------------------------------------
+1/1 Testing: mainTests
+1/1 Test: mainTests
+Command: "/home/yadhu/motius/learn_cmake/main"
+Directory: /home/yadhu/motius/learn_cmake
+"mainTests" start time: Mar 09 11:44 CET
+Output:
+----------------------------------------------------------
+Inside the addition func
+Inside the subtraction func
+Version number 1.0
+Sum is 110
+ Diff is -90
+<end of output>
+Test time =   0.00 sec
+----------------------------------------------------------
+Test Passed.
+"mainTests" end time: Mar 09 11:44 CET
+"mainTests" time elapsed: 00:00:00
+----------------------------------------------------------
+
+End testing: Mar 09 11:44 CET

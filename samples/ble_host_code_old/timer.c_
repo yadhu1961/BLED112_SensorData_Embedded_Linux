@@ -1,0 +1,88 @@
+#include "timer.h"
+#include "cmd_def.h"
+
+
+
+uint8_t invalid_values[17];
+pthread_t update_values_thread;
+
+int update_thread_init()
+{
+    memset(invalid_values,0xff,17);
+    if(pthread_create(&update_values_thread,NULL,update_attribute_thread,NULL))
+    {
+        printf("%s\n","Failed to create update thread exit" );
+        return -1;
+    }
+
+}
+
+void *update_attribute_thread(void *argptr)
+{
+    if(DEBUG)printf("%s\n",__func__);
+    //This variable is for overwriting the sensor values with junk values as soon as smart phone disconnects. 
+    uint8_t x[17] = {0};
+    uint8_t y[17] = {0};
+    uint8_t z[17] = {0};
+    uint8_t position[17] = {0};
+    x[0] = 0x01;
+    y[0] = 0x02;
+    z[0] = 0x03;
+    while(1)
+    {
+        usleep(1000*1000); //Updates the attributes for every second
+        if(state == state_authenticated)
+        {
+            x[16] = checksum(x,16);
+            y[16] = checksum(y,16);
+            z[16] = checksum(z,16);
+            if(DEBUG)printf("Hello there, hear me, I am writing attributes to database\n");
+            encrypt(authenticated_key->key,x,x);
+            if(DEBUG)print_data("Encrypted valueof x",x,16);
+            ble_cmd_attributes_write(X_ATTRIBUTE_HANDLE,0,17,x);
+            encrypt(authenticated_key->key,y,y);
+            if(DEBUG)print_data("Encrypted value of y",y,16);
+            ble_cmd_attributes_write(Y_ATTRIBUTE_HANDLE,0,17,y);
+            encrypt(authenticated_key->key,z,z);
+            if(DEBUG)print_data("Encrypted value of z",z,16);
+            ble_cmd_attributes_write(Z_ATTRIBUTE_HANDLE,0,17,z);
+            if(authenticated_key->permission == 0)
+            {
+                memset(position,0xff,17);
+                if(DEBUG)printf("permission level is zero hence writing 0xff value to position attribute\n");
+                ble_cmd_attributes_write(POSITION_ATTRIBUTE_HANDLE,0,17,invalid_values);
+            }
+            else
+            {
+                position[0] = 0x04;
+                position[16] = checksum(position,16);
+                encrypt(authenticated_key->key,position,position);
+                if(DEBUG)print_data("Encrypted value of position",position,17);
+                ble_cmd_attributes_write(POSITION_ATTRIBUTE_HANDLE,0,17,position);
+            }
+        }
+        else
+            printf("%s\n","Skipping update, State is not authenticated" );
+    }
+}
+
+void print_data(const char *tittle, const void* data, int len)
+{
+    printf("%s : ",tittle);
+    const unsigned char * p = (const unsigned char*)data;
+    int i = 0;
+    
+    for (; i<len; ++i)
+        printf("%02X ", *p++);
+    printf("\n");
+}
+
+
+void invalidate_values()
+{
+    if(DEBUG)printf("Invalidating the values\n");
+    ble_cmd_attributes_write(X_ATTRIBUTE_HANDLE,0,17,invalid_values);
+    ble_cmd_attributes_write(Y_ATTRIBUTE_HANDLE,0,17,invalid_values);
+    ble_cmd_attributes_write(Z_ATTRIBUTE_HANDLE,0,17,invalid_values);
+    ble_cmd_attributes_write(POSITION_ATTRIBUTE_HANDLE,0,17,invalid_values);
+}

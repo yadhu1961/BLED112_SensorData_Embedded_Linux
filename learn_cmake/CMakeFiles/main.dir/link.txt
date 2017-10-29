@@ -1,0 +1,1 @@
+/usr/bin/cc     CMakeFiles/main.dir/main.c.o  -o main -rdynamic additionlib/libadditionlib.a subtractionlib/libsubtractionlib.so -Wl,-rpath,/home/yadhu/motius/learn_cmake/subtractionlib: 

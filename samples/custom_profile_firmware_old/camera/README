@@ -1,0 +1,49 @@
+Before running the host side Linux application Custom profile has to be created using bluegiga profile creation tools,
+Refer to the following link about custom profile creation tools
+
+https://www.silabs.com/content/dam/siliconlabs/documents/login/user-guides/ug211-bt-smart-profile-toolkit.pdf
+
+The steps which need to be followed are explained followed in our use case are explained below.
+These steps need to be followed windows PC.
+
+1.Download the Bluegiga Bluetooth® Smart Software Stack.
+
+2.You will download a Bluegiga-ble-[versions].exe. Double click on the executable and follow the steps
+	prompted by the application to complete the installation.
+
+3.If you have given default settings while installing, SDK will be installed to C:\Bluegiga directory.
+
+4.If this is the first time you are using BLED112 in your windows, Then you need to install the drivers.
+	Drivers are provided by Bluegiga and reside in C:\Bluegiga\ble-[version]\windrv. This folder contains two
+	drivers, one required for communicating with BLED112 in normal mode. One more is required for updating the
+	firmware in the bootloader mode. Install these drivers by manually selecting the drivers directory When
+	windows automatically tries to install the drivers.
+
+5.Once you are successfully installed you can see Bluegiga dongle connected to one of the COM port of windows.
+
+6.If you want to understand and play around with BLED112 dongle run blegui2.exe application present in the bin
+	folder. Otherwise go to next step.
+
+7.Once you followed the above steps you are ready to build a custom profile application for BLED112.
+
+8.Now download the custom profile application project from https://gitlab.motius.de.
+	Go to following link to download the project https://gitlab.motius.de/internal/b-and-r-middelware/tree/developer .
+	Download as zip file and extract it.
+
+9.In the extracted folder you will see a drectory custom_profile_firmware\camera go to this directory.
+	This directory contains a custom profile project.
+
+10.For building the project, Open command prompt in windows. Go to C:\Bluegiga\ble-[SDK version]\bin\
+	This folder contains a windows executable by name bgbuild.exe this is the compiler which builds the project.
+	Execute the following command to build the project.
+	Example: bgbuild.exe <path_to_custom_profile_project>\project-ble112.bgproj Above command will create a binary
+	out-ble112.hex This file contains the firmware which need to flashed to the dongle.
+
+11.Launch the BLE GUI application, select the BLED112 port and try to connect by clicking the "Attach" button.
+	If all goes well, you will see green "Connected" message. Then select Commands/DFU menu item,
+	select the HEX file we have just generated, click on the "Boot into DFU mode" button. One peculiarity of
+	the BLED112 that in DFU mode it becomes logically another USB device so the main window will display red
+	"Disconnected" message(If windows fa  Then click "Upload".
+	If the upload counter reaches 100% and you see the "Finished" message, the firmware update is done.
+	Once the above steps are done. Dongle is ready for running Linux side application,
+	Disconnect the dongle and connect it to board/PC.
