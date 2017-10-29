@@ -1,6 +1,6 @@
 Steps for running the ble code in the linux board.
 
-How to set up and run the B&R Middleware
+How to set up and run the Middleware
 Steps for running the ble code in the linux board.
 
 Connect the dongle to board(Running Linux).
@@ -11,12 +11,7 @@ Run the "dmesg" command you will see, To which port dongle is connected(eg: /dev
 If you have an account in the https://gitlab.motius.de you can download the code(If don't have one create one and add
 your PC privately key to git account).
 
-Download the code by executing following command "git clone git@gitlab.motius.de:internal/b-and-r-middelware.git"
-(obviously without double quotes :-) ).
-
-After downloading goto repository directory with the command(cd b-and-r-middelware).
-
-Switch to developer branch by using the command (git checkout developer).
+Download the code
 
 Then, if do "ls" you will see lot of directories. main code is in "ble_host_code" directory. change to this directory.
 
