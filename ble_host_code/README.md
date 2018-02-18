@@ -8,9 +8,6 @@ Connect the dongle to board(Running Linux).
 Run the "dmesg" command you will see, To which port dongle is connected(eg: /dev/ttyACM0). It can be from /dev/ttyACM0 to
 /dev/ttyACM9.(TODO: Modify udev rules to restrict the port to specific node)
 
-If you have an account in the https://gitlab.motius.de you can download the code(If don't have one create one and add
-your PC privately key to git account).
-
 Download the code
 
 Then, if do "ls" you will see lot of directories. main code is in "ble_host_code" directory. change to this directory.
